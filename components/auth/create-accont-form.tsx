@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useRouter } from "next/navigation"
 
 // Montando a logica de validação
 const formSchema = z.object({
@@ -27,6 +29,7 @@ const formSchema = z.object({
 })
 
 export default function CreateAccontForm() {
+    const router = useRouter()
     // tratando os dados para o formulario
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -37,7 +40,32 @@ export default function CreateAccontForm() {
     })
     
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
+        // Logica para se cadastrar
+        try {
+            const supabase = createClientComponentClient()
+            // Desconstruindo o atributo values 
+            const { email, password} = values
+            
+            // fazendo a criação do user
+            const {error,data: { user } } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    // comfirmando o email do usuario
+                    emailRedirectTo: `${location.origin}/auth/callback`,
+                }
+            })
+
+            // direcionando user para a home
+            if (user) {
+                // zerando os campos do formulario
+                form.reset()
+                router.push("/")
+            }
+            
+        } catch (error) {
+            console.log("CreateAccontForm ", error)
+        }
     }
 
     return (

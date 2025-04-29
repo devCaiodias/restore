@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useRouter } from "next/navigation"
 
 // Montando a logica de validação
 const formSchema = z.object({
@@ -27,6 +29,7 @@ const formSchema = z.object({
 })
 
 export default function LoginAccontForm() {
+    const router = useRouter()
     // tratando os dados para o formulario
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -37,7 +40,21 @@ export default function LoginAccontForm() {
     })
     
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
+
+        // logica para fazer login
+        try {
+            const supabase = createClientComponentClient()
+            const {email, password} = values
+
+            const {error, data: { session }} = await supabase.auth.signInWithPassword({
+                email, password
+            })
+
+            form.reset()
+            router.refresh()
+        } catch (error) {
+            console.log("LoginAccontForm " + error)
+        }
     }
 
     return (
@@ -71,7 +88,7 @@ export default function LoginAccontForm() {
                         </FormItem>
                     )} />
 
-                    <Button className="m-2" type="submit">Create Account</Button>
+                    <Button className="m-2" type="submit">Login Account</Button>
                 </form>
             </Form>
         </div>
