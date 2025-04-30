@@ -8,7 +8,7 @@ export default async function UserApp() {
     let loggedin = false;
     
     try {
-        const supabase = createServerComponentClient({cookies})
+        const supabase = createServerComponentClient({ cookies }); // ✅ forma correta
         const {data: {session}} = await supabase.auth.getSession()
     
         if (session) {
@@ -23,12 +23,10 @@ export default async function UserApp() {
         }
     }
 
-
     return (
         <div>
-            <UserNav />
-            <h1>User-app logger in</h1>
-            <p></p>
+            <h1><UserNav /></h1>
+
         </div>
     )
 }
