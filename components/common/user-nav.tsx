@@ -44,7 +44,7 @@ export default function UserNav() {
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                         <Avatar>
-                            <AvatarImage src="/avatars/avata.jpg" />
+                            <AvatarImage src="/avatars/avata.jpg"/>
                             <AvatarFallback>SC</AvatarFallback>
                         </Avatar>
                     </Button>
@@ -79,8 +79,6 @@ export default function UserNav() {
             </DropdownMenu>
             )
             }
-        
-            
         </>
     )
 }
