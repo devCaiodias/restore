@@ -50,17 +50,18 @@ export default function CreateAccontForm() {
             const {error,data: { user } } = await supabase.auth.signUp({
                 email,
                 password,
-                options: {
+                //options: {
                     // comfirmando o email do usuario
-                    emailRedirectTo: `${location.origin}/auth/callback`,
-                }
+                 //   emailRedirectTo: `${location.origin}/auth/callback`,
+                //}
             })
 
             // direcionando user para a home
             if (user) {
                 // zerando os campos do formulario
                 form.reset()
-                router.push("/")
+                //router.push("/")
+                router.refresh()
             }
             
         } catch (error) {
@@ -90,7 +91,7 @@ export default function CreateAccontForm() {
                         <FormItem className="m-3">
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input placeholder="Password" {...field} />
+                                <Input type="password" placeholder="Password" {...field} />
                             </FormControl>
                             <FormDescription>
                                 This is your Password
