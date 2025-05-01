@@ -1,5 +1,6 @@
 import UserNav from "@/components/common/user-nav";
 import UserAppHeader from "@/components/user-app-header";
+import UserAppSideBar from "@/components/user-app/user-app-sidebar";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect, RedirectType } from "next/navigation";
@@ -33,7 +34,7 @@ export default async function UserApp() {
                     <div className="bg-background">
                     
                         <div className="grid lg:grid-cols-5">
-
+                                <UserAppSideBar className="hidden md:block" />
                             <div className="col-span-3 lg:col-span-4 lg:border-1">
 
                                     <div className="h-full px-4 py-6 lg:px8">
