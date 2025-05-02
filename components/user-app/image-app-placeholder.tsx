@@ -35,6 +35,7 @@ export default function ImageUploadPlaceholder() {
 
             if (!error) {
                 setFileToProcess(data)
+            
             }
         } catch (error) {
             console.log("onDrop: ", error)
@@ -62,6 +63,28 @@ export default function ImageUploadPlaceholder() {
     // It just gets a boolean if the dialog is opening or closing
     async function handleDialoOpenChange(e: boolean) {
         console.log(e)
+    }
+
+    async function handleEnhance() {
+        try {
+            const supabase = createClientComponentClient()
+            const {data: {publicUrl}} = supabase.storage.from(process.env.NEXT_PUBLIC_SUPABASE_APP_BUCKET_IMAGE_FOLDER).getPublicUrl(`${fileToProcess?.path}`)
+
+            console.log("publicUrl: ", publicUrl)
+
+            const res = await fetch("api/ai/replicate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    imageUrl: publicUrl
+                })
+            })
+
+        } catch (error) {
+            console.log("handleEnhance: " , error)
+        }
     }
 
     return (
@@ -126,8 +149,8 @@ export default function ImageUploadPlaceholder() {
                                 </div>
                             </div>
                             <DialogFooter >
-                                <Button>
-                                    Import Phone
+                                <Button onClick={handleEnhance}>
+                                    Enhance
                                 </Button>
                             </DialogFooter>
                     </DialogContent>
