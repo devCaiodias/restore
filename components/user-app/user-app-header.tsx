@@ -1,6 +1,6 @@
 'use client'
 
-import UserNav from "./common/user-nav"
+import UserNav from "../common/user-nav"
 
 export default function UserAppHeader() {
     return (
